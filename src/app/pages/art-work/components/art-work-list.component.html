@@ -1,0 +1,77 @@
+<form [formGroup]="searchForm" class="nx-margin-top-xs">
+    <div nxRow>
+        <div nxColOffset="1,0,1,2" nxCol="12,12,5,4">
+            <nx-formfield nxLabel="Filter:">
+                <nx-multi-select formControlName="filterBy" placeholder="Style" [options]="filterBy"
+                    [selectLabel]="selectLabel" [selectValue]="selectValue">
+                </nx-multi-select>
+            </nx-formfield>
+        </div>
+        <div nxCol="12,12,5,4">
+            <nx-formfield nxLabel="Sort by:">
+                <nx-dropdown formControlName="sortBy" [options]="sortByType" selectLabel="label" selectValue="value"
+                    (nxValueChange)="onChangeSortBy($event)">
+                </nx-dropdown>
+            </nx-formfield>
+        </div>
+    </div>
+
+    <ng-container *ngIf="(listState$ | async)!.totalPages > 0">
+        <div nxRow nxRowAlignContent="end,end,around,stretch">
+            <div *ngFor="let item of resultList;index as i" nxCol="12,12,12,4,3" class="nx-margin-bottom-s">
+                <nx-card>
+                    <nx-card-header>
+                        <img width="450" height="420" *ngIf="item.image_id; else imageErr" appSrc="{{ item.image_id }}"
+                            alt="{{ item.image_id }}" class="responsive" />
+                    </nx-card-header>
+                    <ng-template #imageErr>
+                        <img width="400" height="400" src="/assets/images/not-found.svg" alt="not found" />
+                    </ng-template>
+
+                    <h3 nxCopytext class="nx-margin-bottom-m"><b>{{item.title}} </b></h3>
+                    <p nxCopytext="normal"><b>{{item.artist_title}} <br /></b></p>
+                    <p nxCopytext="normal">{{item.place_of_origin}}
+                        {{item.date_start | compareYearDisplay:item.date_end}} </p>
+                    <p nxCopytext="normal">{{item.medium_display}} </p>
+                </nx-card>
+            </div>
+        </div>
+        <div nxRow>
+            <div nxColOffset="4,3,2,4" nxCol="4">
+                <nx-pagination [nxCount]="count" [nxPage]="page" [nxPerPage]="perPage" nxType="advanced"
+                    (nxGoPrev)="prevPage()" (nxGoNext)="nextPage()" (nxGoPage)="goToPage($event)">
+                </nx-pagination>
+            </div>
+        </div>
+    </ng-container>
+
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div nxRow>
+    
+
+    <div nxCol="12, 12, 6">
+        <nx-formfield nxLabel="Style">
+            <nx-multi-select placeholder="Choose options" [options]="complexOptions" [selectLabel]="selectLabel"
+                [selectValue]="selectValue"></nx-multi-select>
+        </nx-formfield>
+    </div>
+
+
+</div> -->
